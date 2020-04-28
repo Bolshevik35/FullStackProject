@@ -36,7 +36,8 @@ class App extends Component {
 		super();
 		this.state = {
 			input: '',
-			imageUrl: ''
+			imageUrl: '',
+			list: []
 		};
 	}
 
@@ -45,17 +46,18 @@ class App extends Component {
 
 	}
 
+	outputColors = (data) => data.outputs[0].data.colors;
+
+	displayColor = (list) => {
+		console.log(list);
+		this.setState({list: list});
+	}
+
 	onSubmit = () => {
 		this.setState({imageUrl: this.state.input});
-		app.models.predict(Clarifai.COLOR_MODEL, this.state.input).then(
-		    function(response){
-		      // do something with response
-		      console.log(response.outputs[0].data.colors);
-		    },
-		    function(err) {
-		      // there was an error
-    }
-  );
+		app.models.predict(Clarifai.COLOR_MODEL, this.state.input)
+			.then(response => this.displayColor(this.outputColors(response)))
+		    .catch(err => console.log(err))
 	}
 
 	render(){	
@@ -69,7 +71,7 @@ class App extends Component {
 	      <ImageLinkForm 
 	      	inputChange={this.inputChange} 
 	      	onSubmit={this.onSubmit}/>
-	      <ColorDetector imageUrl={this.state.imageUrl}/>
+	      <ColorDetector imageUrl={this.state.imageUrl} list= {this.state.list}/>
 	    </div>
 	  );
 	}

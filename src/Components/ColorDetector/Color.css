@@ -1,0 +1,10 @@
+.color-list {
+	font-family: 'Roboto Mono, sans-serif';
+    font-size: 20px;
+    position: relative;
+    line-height: 1px;
+    height: 36px;
+    display: flex;
+    justify-content: space-between;
+    word-spacing: 10px;
+}

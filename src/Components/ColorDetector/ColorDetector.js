@@ -1,13 +1,18 @@
-import React from 'react'; 
+import React from 'react';
+import Color from './Color';
 
-const ColorDetector = ({imageUrl}) => {
+const ColorDetector = ({imageUrl, list}) => {
 	return (
 		<div className='center ma2'>
 			<div className='ma2'>
 				<img alt='' src={imageUrl}  className='w-100'/>
 			</div>
-			<div className='dib br3 pa2 ma2 shadow-4'>
-				<p>Color Table </p>
+			<div >
+				{list.map((element, index) =>
+					<Color name={list[index].w3c.name} 
+						hex={list[index].w3c.hex} 
+						percentage={list[index].value} />)
+				}
 			</div>
 		</div>
 	);
