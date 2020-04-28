@@ -4,7 +4,7 @@ import Color from './Color';
 const ColorDetector = ({imageUrl, list}) => {
 	return (
 		<div className='center ma2'>
-			<div className='ma2'>
+			<div className='ma2' style={{width:600, height:'auto'}}>
 				<img alt='' src={imageUrl}  className='w-100'/>
 			</div>
 			<div >
