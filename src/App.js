@@ -5,6 +5,7 @@ import Logo from './Components/Logo/Logo';
 import ImageLinkForm from './Components/ImageLinkForm/ImageLinkForm';
 import Rank from './Components/Rank/Rank';
 import ColorDetector from './Components/ColorDetector/ColorDetector';
+import Signin from './Components/Signin/Signin';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 
@@ -15,7 +16,7 @@ const app = new Clarifai.App({
 const particleVariables = {
 	    "particles": {
 	        "number": {
-	            "value": 1000,
+	            "value": 500,
 	            "density": {
 	                "enable": true,
 	                "value_area": 1500
@@ -62,7 +63,8 @@ class App extends Component {
 		this.state = {
 			input: '',
 			imageUrl: '',
-			list: []
+			list: [],
+			route: 'signin'
 		};
 	}
 
@@ -85,18 +87,28 @@ class App extends Component {
 		    .catch(err => console.log(err))
 	}
 
+	onRouteChange = (route) => {
+		this.setState({route: route});
+	}
+
 	render(){	
 	  return (
 	    <div className="App">
-	      <Particles className='particles'
+	    	<Particles className='particles'
 	      	    params={particleVariables} />
-	      <Navigation />
-	      <Logo />
-	      <Rank />
-	      <ImageLinkForm 
-	      	inputChange={this.inputChange} 
-	      	onSubmit={this.onSubmit}/>
-	      <ColorDetector imageUrl={this.state.imageUrl} list= {this.state.list}/>
+	      	<Navigation onRouteChange={this.onRouteChange}/>
+	      	{ this.state.route === 'signin' ?
+	      		<Signin onRouteChange={this.onRouteChange}/>
+	      			:
+	      		<div>
+		      		<Logo />
+		      		<Rank />
+		      		<ImageLinkForm 
+		      			inputChange={this.inputChange} 
+		      			onSubmit={this.onSubmit}/>
+		      		<ColorDetector imageUrl={this.state.imageUrl} list= {this.state.list}/>
+	    		</div>
+	    	}
 	    </div>
 	  );
 	}

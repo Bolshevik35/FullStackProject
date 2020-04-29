@@ -6,7 +6,7 @@ function Color(props){
 	let temp = props.percentage * 100;
 	temp = temp.toFixed(2);
 	let colorHex = props.hex;
-	if(colorHex == '#000000'){
+	if(colorHex === '#000000'){
 		return (
 			<div className='tc br3 ma2 pa2 shadow-4 bg-near-white bw2 color-list' style={{'background-color': props.hex , 'color': '#ffffff'}}>
 				<div className='items'>{props.name}</div>
