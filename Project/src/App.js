@@ -10,6 +10,9 @@ import Signup from './Components/Signup/Signup';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 
+
+document.title = "Color Detector";
+
 const app = new Clarifai.App({
 	apiKey: 'a32327fec8b7465086072c1dd37d1980'
 })
