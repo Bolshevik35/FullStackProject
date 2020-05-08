@@ -18,6 +18,7 @@ class Signin extends React.Component {
 		this.setState({signInPassword: event.target.value})
 	}
 
+
 	onSubmitSignin = () => {
 		fetch('http://localhost:3000/signin', {
 			method: 'post',
@@ -36,10 +37,17 @@ class Signin extends React.Component {
 		})
 	}
 
+	onKeyPressedSignin = (event) => {
+		if(event.key === 'Enter'){
+			this.onSubmitSignin();
+		}
+	}
+
 	render(){
 		const {onRouteChange} = this.props;
 		return(
-			<article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw7 shadow-5 center">
+			<article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw7 shadow-5 center"
+				onKeyDown={this.onKeyPressedSignin}>
 				<main className="pa4 black-80">
 				  <div className="measure">
 				    <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
@@ -58,12 +66,12 @@ class Signin extends React.Component {
 				        	type="password" 
 				        	name="password"  
 				        	id="password" 
-				        	onChange={this.onPasswordChange} />
+				        	onChange={this.onPasswordChange}/>
 				      </div>
 				    </fieldset>
 				    <div className="">
 				      <input
-				      	onClick={this.onSubmitSignin} 
+				      	onClick={this.onSubmitSignin}
 				      	className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
 				      	type="submit" 
 				      	value="Sign in"/>

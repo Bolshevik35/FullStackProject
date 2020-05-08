@@ -103,7 +103,10 @@ class App extends Component {
 
 	}
 
-	outputColors = (data) => data.outputs[0].data.colors;
+	outputColors = (data) => {
+
+		return data.outputs[0].data.colors;
+	}
 
 	displayColor = (list) => {
 		// console.log(list);
@@ -132,6 +135,12 @@ class App extends Component {
 		    .catch(err => console.log(err))
 	}
 
+	onKeyDetect = (event) =>{
+		if(event.key === 'Enter'){
+			this.onSubmit();
+		}
+	}
+
 	onRouteChange = (route) => {
 		if (route === 'signin' || route === 'signup'){
 			this.setState({isSignedIn: false});
@@ -155,7 +164,8 @@ class App extends Component {
 			      		<Rank name={this.state.user.name} entries={this.state.user.entries} />
 			      		<ImageLinkForm 
 			      			inputChange={this.inputChange} 
-			      			onSubmit={this.onSubmit}/>
+			      			onSubmit={this.onSubmit}
+			      			onKeyDetect={this.onKeyDetect}/>
 			      		<ColorDetector imageUrl={imageUrl} list= {list}/>
 		    		</div>
 		    		:

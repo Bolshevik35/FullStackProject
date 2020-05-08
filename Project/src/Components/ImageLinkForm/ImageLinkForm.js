@@ -2,9 +2,9 @@ import React from 'react';
 import './ImageLinkForm.css';
 
 
-const ImageLinkForm = ({inputChange, onSubmit}) => {
+const ImageLinkForm = ({inputChange, onSubmit, onKeyDetect}) => {
 	return (
-		<div>
+		<div onKeyDown={onKeyDetect}>
 			<p className='f3'>
 			{'Clarifai will detect colors in your pictures. Give it a try'}
 			</p>

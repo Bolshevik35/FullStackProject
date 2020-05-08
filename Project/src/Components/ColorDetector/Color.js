@@ -8,7 +8,7 @@ function Color(props){
 	let colorHex = props.hex;
 	if(colorHex === '#000000'){
 		return (
-			<div className='tc br3 ma2 pa2 shadow-4 bg-near-white bw2 color-list' style={{'background-color': props.hex , 'color': '#ffffff'}}>
+			<div className='tc br3 ma2 pa2 shadow-4 bg-near-white bw2 color-list' style={{'backgroundColor': props.hex , 'color': '#ffffff'}}>
 				<div className='items'>{props.name}</div>
 				<div className='items'>{props.hex}</div>
 				<div className='items'>{temp}%</div>
@@ -17,7 +17,7 @@ function Color(props){
 	}
 	else{
 		return (
-			<div className='tc br3 ma2 pa2 shadow-4 bg-near-white bw2 color-list' style={{'background-color': colorHex}}>
+			<div className='tc br3 ma2 pa2 shadow-4 bg-near-white bw2 color-list hexBackground' style={{'backgroundColor': colorHex}}>
 				<div className='items'>{props.name}</div>
 				<div className='items'>{props.hex}</div>
 				<div className='items'>{temp}%</div>
