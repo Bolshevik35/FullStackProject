@@ -43,7 +43,7 @@ app.post('/signin', (req, res) => {
 			}
 		}
 		else{
-			res.status(400).json('Email does not exist.');
+			res.status(200).json('Wrong credential!');
 		}
 	})
 	.catch(err => res.status(400).json('Wrong credential.'))

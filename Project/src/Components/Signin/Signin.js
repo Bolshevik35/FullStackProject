@@ -6,7 +6,8 @@ class Signin extends React.Component {
 		super(props);
 		this.state = {
 			signInEmail: '',
-			signInPassword: ''
+			signInPassword: '',
+			isCorrect: true
 		}
 	}
 
@@ -30,7 +31,11 @@ class Signin extends React.Component {
 		})
 		.then(response => response.json())
 		.then(data => {
-			if (data.id){
+			//work on return WRONG USER OR PASSWORD.
+			if (data === 'Wrong credential!'){
+				this.setState({isCorrect: false})
+			}
+			else{
 				this.props.loadUser(data);
 				this.props.onRouteChange('home');
 			}
@@ -45,6 +50,7 @@ class Signin extends React.Component {
 
 	render(){
 		const {onRouteChange} = this.props;
+		const {isCorrect} = this.state;
 		return(
 			<article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw7 shadow-5 center"
 				onKeyDown={this.onKeyPressedSignin}>
@@ -68,6 +74,11 @@ class Signin extends React.Component {
 				        	id="password" 
 				        	onChange={this.onPasswordChange}/>
 				      </div>
+				      {!isCorrect ?
+				      	<p style={{'color': 'red'}}>Wrong username or password. </p>
+				      	:
+				      	<p></p>
+				      }
 				    </fieldset>
 				    <div className="">
 				      <input
