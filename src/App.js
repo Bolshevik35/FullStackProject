@@ -14,7 +14,7 @@ import Clarifai from 'clarifai';
 document.title = "Color Detector";
 
 const app = new Clarifai.App({
-	apiKey: process.env.CLARIFAI_KEY 
+	apiKey: 'a32327fec8b7465086072c1dd37d1980' 
 })
 
 const particleVariables = {
