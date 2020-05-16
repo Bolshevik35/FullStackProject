@@ -21,7 +21,7 @@ class Signin extends React.Component {
 
 
 	onSubmitSignin = () => {
-		fetch('http://localhost:3000/signin', {
+		fetch('https://intense-chamber-58310.herokuapp.com/signin', {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
@@ -31,8 +31,7 @@ class Signin extends React.Component {
 		})
 		.then(response => response.json())
 		.then(data => {
-			//work on return WRONG USER OR PASSWORD.
-			if (data === 'Wrong credential!'){
+			if (data === 'Wrong credential!' || data === 'Wrong credential.'){
 				this.setState({isCorrect: false})
 			}
 			else{

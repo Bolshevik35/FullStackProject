@@ -14,7 +14,7 @@ import Clarifai from 'clarifai';
 document.title = "Color Detector";
 
 const app = new Clarifai.App({
-	apiKey: 'a32327fec8b7465086072c1dd37d1980'
+	apiKey: process.env.CLARIFAI_KEY 
 })
 
 const particleVariables = {
@@ -118,7 +118,7 @@ class App extends Component {
 		app.models.predict(Clarifai.COLOR_MODEL, this.state.input)
 			.then(response => { 
 				if (response) {
-					fetch('http://localhost:3000/image', {
+					fetch('https://intense-chamber-58310.herokuapp.com/image', {
 						method: 'put',
 						headers: {'Content-Type': 'application/json'},
 						body: JSON.stringify({
