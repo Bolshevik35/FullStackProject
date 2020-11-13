@@ -21,8 +21,8 @@ class Signin extends React.Component {
 
 
 	onSubmitSignin = () => {
-		fetch('https://intense-chamber-58310.herokuapp.com/signin', {
-			method: 'post',
+		fetch('https://kyb3636qy0.execute-api.us-east-1.amazonaws.com/dev', {
+			method: 'POST',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
 				email: this.state.signInEmail,
