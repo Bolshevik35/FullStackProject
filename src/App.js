@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Navigation from './Components/Navigation/Navigation';
 import Logo from './Components/Logo/Logo';
@@ -14,171 +14,175 @@ import Clarifai from 'clarifai';
 document.title = "Color Detector";
 
 const app = new Clarifai.App({
-	apiKey: 'a32327fec8b7465086072c1dd37d1980' 
+    apiKey: 'a32327fec8b7465086072c1dd37d1980'
 })
 
 const particleVariables = {
-	    "particles": {
-	        "number": {
-	            "value": 500,
-	            "density": {
-	                "enable": true,
-	                "value_area": 1500
-	            }
-	        },
-	        "line_linked": {
-	            "enable": true,
-	            "opacity": 0.08
-	        },
-	        "move": {
-	            "direction": "right",
-	            "speed": 0.1
-	        },
-	        "size": {
-	            "value": 1
-	        },
-	        "opacity": {
-	            "anim": {
-	                "enable": true,
-	                "speed": 1,
-	                "opacity_min": 0.05
-	            }
-	        }
-	    },
-	    "interactivity": {
-	        "events": {
-	            "onclick": {
-	                "enable": true,
-	                "mode": "push"
-	            }
-	        },
-	        "modes": {
-	            "push": {
-	                "particles_nb": 1
-	            }
-	        }
-	    },
-	    "retina_detect": true
-	};
+    "particles": {
+        "number": {
+            "value": 500,
+            "density": {
+                "enable": true,
+                "value_area": 1500
+            }
+        },
+        "line_linked": {
+            "enable": true,
+            "opacity": 0.08
+        },
+        "move": {
+            "direction": "right",
+            "speed": 0.1
+        },
+        "size": {
+            "value": 1
+        },
+        "opacity": {
+            "anim": {
+                "enable": true,
+                "speed": 1,
+                "opacity_min": 0.05
+            }
+        }
+    },
+    "interactivity": {
+        "events": {
+            "onclick": {
+                "enable": true,
+                "mode": "push"
+            }
+        },
+        "modes": {
+            "push": {
+                "particles_nb": 1
+            }
+        }
+    },
+    "retina_detect": true
+};
 
 class App extends Component {
-	constructor(){
-		super();
-		this.state = {
-			input: '',
-			imageUrl: '',
-			list: [],
-			route: 'signin',
-			isSignedIn: false,
-			user: {
-				id: '',
-				name: '',
-				email: '',
-				entries: 0,
-				joined: ''
-			}
-		};
-	}
+    constructor() {
+        super();
+        this.state = {
+            input: '',
+            imageUrl: '',
+            list: [],
+            route: 'signin',
+            isSignedIn: false,
+            user: {
+                id: '',
+                name: '',
+                email: '',
+                entries: 0,
+                joined: ''
+            }
+        };
+    }
 
-	loadUser = (data) => {
-		this.setState({user: {
-			id: data.id,
-			name: data.name,
-			email: data.email,
-			entries: data.entries,
-			joined: data.joined
-		}})
-	}
+    loadUser = (data) => {
+        this.setState({
+            user: {
+                id: data.id,
+                name: data.name,
+                email: data.email,
+                entries: data.entries,
+                joined: data.joined
+            }
+        })
+    }
 
-	// componentDidMount(){
-	// 	fetch('http://localhost:3000/')
-	// 		.then(response => response.json())
-	// 		.then(console.log)
-	// }
+    // componentDidMount(){
+    // 	fetch('http://localhost:3000/')
+    // 		.then(response => response.json())
+    // 		.then(console.log)
+    // }
 
 
 
-	inputChange = (event) => {
-		this.setState({input: event.target.value});
+    inputChange = (event) => {
+        this.setState({ input: event.target.value });
+    }
 
-	}
+    outputColors = (data) => {
+        return data.outputs[0].data.colors;
+    }
 
-	outputColors = (data) => {
+    displayColor = (list) => {
+        // console.log(list);
+        this.setState({ list: list });
+    }
 
-		return data.outputs[0].data.colors;
-	}
+    onSubmit = () => {
+        this.setState({ imageUrl: this.state.input });
+        app.models.predict(Clarifai.COLOR_MODEL, this.state.input)
+            .then(response => {
+                if (response) {
+                    fetch('https://murmuring-taiga-01016.herokuapp.com/image', {
+                            method: 'put',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                id: this.state.user.id
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(count => {
+                            this.setState(Object.assign(this.state.user, { entries: count }))
+                        })
+                    this.displayColor(this.outputColors(response));
+                }
+            })
+            .catch(err => console.log(err))
+    }
 
-	displayColor = (list) => {
-		// console.log(list);
-		this.setState({list: list});
-	}
+    onKeyDetect = (event) => {
+        if (event.key === 'Enter') {
+            this.onSubmit();
+        }
+    }
 
-	onSubmit = () => {
-		this.setState({imageUrl: this.state.input});
-		app.models.predict(Clarifai.COLOR_MODEL, this.state.input)
-			.then(response => { 
-				if (response) {
-					fetch('https://intense-chamber-58310.herokuapp.com/image', {
-						method: 'put',
-						headers: {'Content-Type': 'application/json'},
-						body: JSON.stringify({
-							id: this.state.user.id
-						})
-					})
-						.then(response => response.json())
-						.then(count => {
-							this.setState(Object.assign(this.state.user,{entries: count}))
-						})
-					this.displayColor(this.outputColors(response))
-		    	}
-		    })
-		    .catch(err => console.log(err))
-	}
+    onRouteChange = (route) => {
+        if (route === 'signin' || route === 'signup') {
+            this.setState({ isSignedIn: false });
+        } else if (route === 'home') {
+            this.setState({ isSignedIn: true });
+        }
+        this.setState({ route: route });
+    }
 
-	onKeyDetect = (event) =>{
-		if(event.key === 'Enter'){
-			this.onSubmit();
-		}
-	}
-
-	onRouteChange = (route) => {
-		if (route === 'signin' || route === 'signup'){
-			this.setState({isSignedIn: false});
-		}
-		else if (route === 'home'){
-			this.setState({isSignedIn: true});
-		}
-		this.setState({route: route});
-	}
-
-	render(){
-		const { imageUrl, route, list, isSignedIn } = this.state ;
-		return (
-		    <div className="App">
-		    	<Particles className='particles'
-		      	    params={particleVariables} />
-		      	<Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
-		      	{route === 'home' ?
-		      		<div>
-			      		<Logo />
-			      		<Rank name={this.state.user.name} entries={this.state.user.entries} />
-			      		<ImageLinkForm 
-			      			inputChange={this.inputChange} 
-			      			onSubmit={this.onSubmit}
-			      			onKeyDetect={this.onKeyDetect}/>
-			      		<ColorDetector imageUrl={imageUrl} list= {list}/>
-		    		</div>
-		    		:
-		    		(route === 'signin' ?
-		      			<Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
-		   				:
-		   				<Signup loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
-		   			)
-
-		    	}
-		    </div>
-	  );
-	}
+    render() {
+        const { imageUrl, route, list, isSignedIn } = this.state;
+        return ( 
+            <div className = "App" >
+                <Particles className = 'particles' params = { particleVariables }/> 
+                <Navigation isSignedIn = { isSignedIn } onRouteChange = { this.onRouteChange }/> 
+                {
+                    route === 'home' ?
+                        <div>
+                            <Logo />
+                            <Rank name = { this.state.user.name } entries = { this.state.user.entries }/> 
+                            <ImageLinkForm
+                                inputChange = { this.inputChange }
+                                onSubmit = { this.onSubmit }
+                                onKeyDetect = { this.onKeyDetect }
+                            /> 
+                            <ColorDetector imageUrl = { imageUrl }
+                                list = { list }
+                            /> 
+                        </div>
+                    :
+                    (route === 'signin' ?
+                        <Signin loadUser = { this.loadUser }
+                            onRouteChange = { this.onRouteChange }
+                        /> :
+                        <Signup loadUser = { this.loadUser }
+                            onRouteChange = { this.onRouteChange }
+                        />
+                    )
+                } 
+            </div>
+        );
+    }
 }
 
 export default App;
