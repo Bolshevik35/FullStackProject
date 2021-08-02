@@ -1,11 +1,13 @@
 import React from 'react'; 
 import './Logo.css';
-import ai from './AI.png';
+import sfuLogo from './sfuLogo.png';
 
 const Logo = () => {
 	return(
-	<div className='ma4 mt0 secret br2 shadow-4' style={{height: 100, width: 100 }}>
-		<img className="pa3" style={{paddinTop: '5px'}} alt='' src={ai} />  				
+	<div className='tl'>
+		<div className='dib ma4 mt0 secret br2 shadow-4'>
+			<img className="pa3" style={{height: 87, width: 204 }} alt='' src={sfuLogo} />  				
+		</div>
 	</div>
 )}
 
